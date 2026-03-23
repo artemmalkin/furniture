@@ -148,13 +148,13 @@ def change_status(order_id: int, status: str = Form(...)):
 
     subject = f"Изменился статус вашего заказа №{order_id}"
     body = (
-        f"Здравствуйте, {order['client_name']}!\n\n"
+        f"Здравствуйте, {order.client_name}!\n\n"
         f"Статус вашего заказа №{order_id} изменён на: {status}\n\n"
         f"Если у вас есть вопросы, свяжитесь с нами."
     )
 
     try:
-        send_email(order["client_email"], subject, body)
+        send_email(order.client_email, subject, body)
     except Exception as e:
         print("Ошибка отправки email:", e)
 
