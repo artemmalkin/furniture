@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учёт заказов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        input, textarea, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #2d6cdf;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1f57b8;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #f0f0f0;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .small-form {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .small-form select {
+            width: auto;
+            margin: 0;
+            min-width: 160px;
+        }
+        .small-form button {
+            width: auto;
+            margin: 0;
+        }
+        @media (max-width: 700px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .small-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .small-form select,
+            .small-form button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>Учёт заказов</h1>
+        <p>Простой MVP для мебельного производства</p>
+    </div>
+
+    <div class="card">
+        <h2>Добавить заказ</h2>
+        <form method="post" action="/orders/add">
+            <div class="form-row">
+                <div>
+                    <label>Имя клиента</label>
+                    <input type="text" name="client_name" required>
+                </div>
+                <div>
+                    <label>Email клиента</label>
+                    <input type="email" name="client_email" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label>Телефон</label>
+                    <input type="text" name="phone">
+                </div>
+                <div>
+                    <label>Комментарий</label>
+                    <input type="text" name="comment">
+                </div>
+            </div>
+
+            <button type="submit">Создать заказ</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Список заказов</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Клиент</th>
+                <th>Контакты</th>
+                <th>Статус</th>
+                <th>Комментарий</th>
+                <th>Дата</th>
+                <th>Изменить статус</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order["id"] }}</td>
+                <td>{{ order["client_name"] }}</td>
+                <td>
+                    {{ order["client_email"] }}<br>
+                    {{ order["phone"] }}
+                </td>
+                <td><strong>{{ order["status"] }}</strong></td>
+                <td>{{ order["comment"] }}</td>
+                <td>{{ order["created_at"] }}</td>
+                <td>
+                    <form class="small-form" method="post" action="/orders/{{ order['id'] }}/status">
+                        <select name="status">
+                            <option value="Новый">Новый</option>
+                            <option value="В работе">В работе</option>
+                            <option value="Готов">Готов</option>
+                            <option value="Закрыт">Закрыт</option>
+                        </select>
+                        <button type="submit">Сохранить</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
