@@ -85,12 +85,7 @@ def index(request: Request):
     ).fetchall()
     conn.close()
     print(templates.get_template(
-        "index.html",
-        {
-            "request": request,
-            "orders": orders,
-        }
-    ))
+        "index.html"))
     return templates.TemplateResponse(
         "index.html",
         {
