@@ -84,7 +84,13 @@ def index(request: Request):
         "SELECT * FROM orders ORDER BY id DESC"
     ).fetchall()
     conn.close()
-    print(templates)
+    print(templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "orders": orders,
+        }
+    ))
     return templates.TemplateResponse(
         "index.html",
         {
