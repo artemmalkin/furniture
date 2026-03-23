@@ -153,7 +153,7 @@
                 <td>{{ order.comment }}</td>
                 <td>{{ order.created_at }}</td>
                 <td>
-                    <form class="small-form" method="post" action="/orders/{{ order['id'] }}/status">
+                    <form class="small-form" method="post" action="/orders/{{ order.id }}/status">
                         <select name="status">
                             <option value="Новый">Новый</option>
                             <option value="В работе">В работе</option>
